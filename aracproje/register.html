@@ -134,7 +134,7 @@
     </form>
   </div>
 
-  <!-- Toast Container -->
+  
   <div class="toast-container" id="toastContainer"></div>
 
   <script>
@@ -173,14 +173,14 @@
   passwordConfirm.classList.toggle('is-valid', passwordsMatch);
   passwordConfirm.classList.toggle('is-invalid', !passwordsMatch);
 
-  // Email formatı yanlışsa uyarı göster
+  
   if (trimmedEmail !== '' && !emailValid) {
     emailFormatWarning.classList.remove('d-none');
   } else {
     emailFormatWarning.classList.add('d-none');
   }
 
-  // Eğer email geçersizse kayıt butonunu kapat
+  
   submitBtn.disabled = !(emailsMatch && passwordsMatch && emailValid);
 }
 
@@ -191,7 +191,7 @@
 
     function showSuccessToast(message) {
       const toastContainer = document.getElementById('toastContainer');
-      // Clear previous toasts
+      
       toastContainer.innerHTML = '';
 
       const toastEl = document.createElement('div');
@@ -231,7 +231,7 @@
     }
   });
 
-  // Kullanıcı e-posta alanını değiştirdiğinde uyarıyı gizle
+  
   email.addEventListener('input', () => {
     emailFormatWarning.classList.add('d-none');
   });

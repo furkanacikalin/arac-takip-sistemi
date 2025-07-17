@@ -92,7 +92,7 @@
       color: #ff7300;
     }
 
-    /* Araç kartı ana container */
+    
     .vehicle-card {
       border: 1px solid #ccc;
       border-radius: 8px;
@@ -105,7 +105,7 @@
       margin-bottom: 15px;
     }
 
-    /* Üst satır: plaka ve durum yan yana */
+    
     .header-row {
       display: flex;
       justify-content: space-between;
@@ -113,7 +113,7 @@
       margin-bottom: 15px;
     }
 
-    /* Plaka stili */
+    
     .plaka-label {
       font-weight: 900;
       font-size: 2rem;
@@ -121,7 +121,7 @@
       user-select: all;
     }
 
-    /* Durum stili (siyah, büyük) */
+    
     .durum-label {
       font-weight: 700;
       font-size: 1.7rem;
@@ -129,7 +129,7 @@
       text-transform: uppercase;
     }
 
-    /* Alt satır araç detayları */
+    
     .info-row {
       display: flex;
       flex-wrap: wrap;
@@ -142,14 +142,14 @@
       flex: 1 1 45%;
     }
 
-    /* Responsive için küçük ekranlarda tek sütun */
+   
     @media (max-width: 480px) {
       .info-row>div {
         flex: 1 1 100%;
       }
     }
 
-    /* Güncelle butonu container */
+    
     #update-container {
       max-width: 600px;
       text-align: right;
@@ -170,7 +170,7 @@
           </a>
         </div>
 
-        <!-- Kullanıcı alanı: Başta giriş butonu görünsün -->
+        
         <div id="user-area">
           <a href="login.html" class="btn btn-outline-light me-2" id="login-btn">Giriş Yap</a>
           <span id="user-name" style="display:none;"></span>
@@ -194,7 +194,7 @@
 
   </div>
 
-  <!-- Güncelleme Modal -->
+  
   <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <form id="updateForm" class="modal-content">
@@ -205,7 +205,7 @@
        <div class="modal-body">
 
          <div class="position-absolute top-0 start-50 translate-middle-x p-2" style="z-index: 1060;" id="modalToastWrapper">
-    <!-- Başarı toast -->
+    
     <div id="modalSuccessToast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
       <div class="d-flex">
         <div class="toast-body">✅ Araç bilgileri güncellendi.</div>
@@ -213,7 +213,7 @@
       </div>
     </div>
 
-    <!-- Hata toast -->
+    
     <div id="modalErrorToast" class="toast align-items-center text-bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
       <div class="d-flex">
         <div class="toast-body" id="modalErrorMessage">❌ Güncelleme sırasında hata oluştu.</div>
@@ -247,7 +247,7 @@
     </div>
   </div>
 
-  <!-- Başarılı giriş TOAST mesajı -->
+  
   <div class="position-fixed top-0 start-50 translate-middle-x p-3" style="z-index: 9999;">
     <div id="loginToast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive"
       aria-atomic="true">
@@ -316,7 +316,7 @@
     window.addEventListener("load", initializeSidebar);
     window.addEventListener("resize", handleResize);
 
-    // Kullanıcı adı göster / çıkış butonunu aktif et
+    
     window.addEventListener("DOMContentLoaded", () => {
       const token = localStorage.getItem("token");
       const userName = localStorage.getItem("userName");
@@ -344,7 +344,7 @@
       }
     });
 
-    // Başarılı giriş sonrası toast gösterimi
+   
     window.addEventListener("DOMContentLoaded", () => {
       const showToast = sessionStorage.getItem("showLoginToast");
       if (showToast === "true") {
@@ -354,14 +354,14 @@
       }
     });
 
-    // --- Araç sorgulama, gösterme ve güncelleme ---
+   
 
-    let currentVehicleData = null; // Güncel araç verisi burada tutulacak
+    let currentVehicleData = null; 
 
     async function searchVehicle(query) {
       const resultDiv = document.getElementById("searchResult");
       resultDiv.innerHTML = "";
-      // Kayıt varsa buton ve modal bilgisi gizle
+      
       hideUpdateSection();
 
       if (!query) return;
@@ -403,7 +403,7 @@
 
     const updatedVehicle = await response.json();
     alert("Güncelleme başarılı!");
-    // Burada modal kapatma veya UI güncelleme kodları olabilir
+    
     return updatedVehicle;
   } catch (error) {
     alert("Güncelleme sırasında hata oluştu: " + error.message);
@@ -412,7 +412,7 @@
 function submitUpdate() {
   const durum = document.getElementById("durumInput").value;
   const km = parseInt(document.getElementById("kmInput").value);
-  const plaka = window.selectedPlaka; // Arama sonrası atanmıştı
+  const plaka = window.selectedPlaka; 
 
   if (!plaka) {
     alert("Plaka bilgisi eksik!");
@@ -424,7 +424,7 @@ function submitUpdate() {
     
     
 
-    // Araç bilgisi kartını oluştur
+    
     function renderVehicleCard(data) {
       const resultDiv = document.getElementById("searchResult");
       resultDiv.innerHTML = `
@@ -446,7 +446,7 @@ function submitUpdate() {
       </div>`;
     }
 
-    // Güncelleme butonu ve container'ını göster
+    
     function showUpdateSection(data) {
       let updateContainer = document.getElementById("update-container");
       if (!updateContainer) {
@@ -462,11 +462,11 @@ function submitUpdate() {
         updateContainer.style.display = "block";
       }
 
-      // Modal alanlarını doldur
+      
       document.getElementById("durumInput").value = data.durum || "";
       document.getElementById("kmInput").value = data.km || "";
 
-      // Güncelle butonuna event listener ekle (birden fazla eklenmesin diye önce kaldır)
+      
       const updateBtn = document.getElementById("updateButton");
       updateBtn.onclick = null;
       updateBtn.onclick = () => {
@@ -475,13 +475,13 @@ function submitUpdate() {
       };
     }
 
-    // Güncelleme alanını gizle
+    
     function hideUpdateSection() {
       const updateContainer = document.getElementById("update-container");
       if (updateContainer) updateContainer.style.display = "none";
     }
 
-    // Form submit (güncelle) işlemi
+    
     document.addEventListener("DOMContentLoaded", () => {
       const form = document.getElementById("updateForm");
       form.addEventListener("submit", async (e) => {
@@ -496,7 +496,7 @@ function submitUpdate() {
           return;
         }
 
-        // Örnek güncelleme isteği
+        
         try {
           const response = await fetch(`http://localhost:3000/allvehicles/${currentVehicleData.plaka}`, {
               method: "PUT",
@@ -522,7 +522,7 @@ function submitUpdate() {
 });
     });
 
-    // Arama kutusu ve butonu oluşturma, eventler
+    
     document.addEventListener("DOMContentLoaded", () => {
       const input = document.createElement("input");
       input.type = "text";
@@ -565,14 +565,14 @@ function submitUpdate() {
       mainContent.prepend(inputGroup);
       mainContent.prepend(image);
 
-      // Enter tuşuna basıldığında arama yap
+      
       input.addEventListener("keypress", (e) => {
         if (e.key === "Enter") {
           searchVehicle(input.value.trim());
         }
       });
 
-      // Ara butonuna tıklandığında arama yap
+      
       button.addEventListener("click", () => {
         searchVehicle(input.value.trim());
       });
@@ -617,7 +617,7 @@ function showModalToast(type, message) {
 }
   </script>
 
-  <!-- Bootstrap ikonlar için -->
+  
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
 </body>
 

@@ -76,7 +76,7 @@
     #user-area {
       display: flex;
       align-items: center;
-      gap: 10px; /* Aradaki boşluk */
+      gap: 10px; 
       color: white;
       font-weight: 500;
     }
@@ -109,7 +109,7 @@
           </a>
         </div>
 
-        <!-- Kullanıcı alanı: Başta giriş butonu görünsün -->
+        
         <div id="user-area">
           <a href="login.html" class="btn btn-outline-light me-2" id="login-btn">Giriş Yap</a>
           <span id="user-name" style="display:none;"></span>
@@ -140,7 +140,7 @@
     
   
   
-  <!-- Başarılı giriş TOAST mesajı -->
+  
   <div class="position-fixed top-0 start-50 translate-middle-x p-3" style="z-index: 9999;">
     <div id="loginToast" class="toast align-items-center text-white bg-success border-0" role="alert"
       aria-live="assertive" aria-atomic="true">
@@ -209,7 +209,7 @@
     window.addEventListener('load', initializeSidebar);
     window.addEventListener('resize', handleResize);
 
-    // Kullanıcı adı göster / çıkış butonunu aktif et
+   
     window.addEventListener('DOMContentLoaded', () => {
       const token = localStorage.getItem('token');
       const userName = localStorage.getItem('userName');
@@ -237,7 +237,7 @@
       }
     });
 
-    // Başarılı giriş sonrası toast gösterimi
+    
     window.addEventListener('DOMContentLoaded', () => {
       const showToast = sessionStorage.getItem('showLoginToast');
       if (showToast === 'true') {
@@ -248,7 +248,7 @@
     });
   </script>
 
-  <!-- Bootstrap ikonlar için -->
+  
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
 
 </body>

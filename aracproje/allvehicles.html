@@ -87,7 +87,7 @@
       color: #ff7300;
     }
 
-    /* Başlık ve arama + buton düzeni */
+    
     #header-bar {
       display: flex;
       align-items: center;
@@ -144,7 +144,7 @@
     <div id="header-bar">
       <h3>Tüm Araçlar</h3>
 
-      <!-- Plaka arama formu -->
+      
       <form id="searchForm" style="margin: 0;">
         <input
           type="text"
@@ -156,7 +156,7 @@
         />
       </form>
 
-      <!-- Yeni Araç Butonu -->
+      
       <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#newVehicleModal">+ Yeni Araç</button>
     </div>
     
@@ -264,7 +264,7 @@
 </tr>
         </thead>
         <tbody>
-          <!-- Araçlar buraya yüklenecek -->
+        
         </tbody>
       </table>
     </div>
@@ -272,7 +272,7 @@
 
  
 
-  <!-- Yeni Araç Ekleme Modalı -->
+ 
   <div
     class="modal fade"
     id="newVehicleModal"
@@ -378,7 +378,7 @@
     </div>
   </div>
 
-  <!-- Silme Onay Modalı -->
+ 
 <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -398,7 +398,7 @@
 </div>
 
 
-  <!-- Araç Güncelleme Modalı -->
+ 
 <div class="modal fade" id="updateVehicleModal" tabindex="-1" aria-labelledby="updateVehicleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -541,7 +541,7 @@
   </div>
 </div>
 
-  <!-- Araç Silindi Toast -->
+ 
 <div id="vehicleDeletedToast" class="toast align-items-center text-white bg-success border-0 mt-2" role="alert" aria-live="assertive" aria-atomic="true">
   <div class="d-flex">
     <div class="toast-body">✅ Araç başarıyla silindi.</div>
@@ -549,7 +549,7 @@
   </div>
 </div>
 
-<!-- Araç Silinemedi Toast -->
+
 <div id="vehicleDeleteErrorToast" class="toast align-items-center text-white bg-danger border-0 mt-2" role="alert" aria-live="assertive" aria-atomic="true">
   <div class="d-flex">
     <div class="toast-body" id="vehicleDeleteErrorMessage">❌ Araç silinirken hata oluştu.</div>
@@ -656,7 +656,7 @@
         const yeniAracBtn = document.querySelector('button[data-bs-target="#newVehicleModal"]');
   if (yeniAracBtn) yeniAracBtn.style.display = token ? "inline-block" : "none";
 
-  // Güncelle ve sil butonlarının görünürlüğünü ayarla
+  
   setActionButtonsVisibility();
       document.getElementById("updateYil").setAttribute("max", currentYear);
 
@@ -749,21 +749,21 @@ function renderVehicles(vehicles) {
     });
 
      tr.querySelector(".detail-btn").addEventListener("click", () => {
-      // Var olan detay satırını bul
+      
       const existingDetailRow = tbody.querySelector(".detail-row");
 
-      // Eğer detay zaten açılmış ve aynı satırın altındaysa kapat
+      
       if (existingDetailRow && existingDetailRow.previousSibling === tr) {
         existingDetailRow.remove();
-        return; // Kapattık, fonksiyonu bitir
+        return; 
       }
 
-      // Diğer açılmış detay satırı varsa kapat
+      
       if (existingDetailRow) {
         existingDetailRow.remove();
       }
 
-      // Yeni detay satırı oluştur
+      
       const detailTr = document.createElement("tr");
 detailTr.classList.add("detail-row");
 detailTr.innerHTML = `
@@ -777,7 +777,7 @@ detailTr.innerHTML = `
   </td>
 `;
 
-      // Detay satırını tıklanan satırın hemen altına ekle
+     
       tr.parentNode.insertBefore(detailTr, tr.nextSibling);
     });
 
@@ -786,7 +786,7 @@ detailTr.innerHTML = `
   setActionButtonsVisibility();
 }
 
-  // Silme onay butonuna tıklanınca:
+  
 document.getElementById("confirmDeleteBtn").addEventListener("click", async () => {
   if (!plakaToDelete) return;
 
@@ -802,24 +802,24 @@ document.getElementById("confirmDeleteBtn").addEventListener("click", async () =
       throw new Error("Silme işlemi başarısız: " + errMsg);
     }
 
-    // Modalı kapat
+    
     const deleteModalEl = document.getElementById("deleteConfirmModal");
     const deleteModalInstance = bootstrap.Modal.getInstance(deleteModalEl);
     deleteModalInstance.hide();
 
     plakaToDelete = null;
 
-    // Listeyi güncelle
+    
     await fetchVehicles();
 
-    // ✅ TOAST MESAJI GÖSTER
+    
     const deleteToast = new bootstrap.Toast(document.getElementById("vehicleDeletedToast"), {
       delay: 3000,
     });
     deleteToast.show();
 
   } catch (error) {
-    // ❌ HATA TOAST
+    
     const errorMsg = document.getElementById("vehicleDeleteErrorMessage");
     errorMsg.textContent = "❌ " + error.message;
 
@@ -852,7 +852,7 @@ document.getElementById("confirmDeleteBtn").addEventListener("click", async () =
 
 
 
-    // Yeni Araç Form Gönderimi
+    
     document.getElementById("newVehicleForm").addEventListener("submit", async function (e) {
   e.preventDefault();
 
@@ -897,7 +897,7 @@ document.getElementById("confirmDeleteBtn").addEventListener("click", async () =
 
     await fetchVehicles();
 
-    // Başarıyla eklenince toast bildirimi göster
+   
     const addedToast = new bootstrap.Toast(document.getElementById("vehicleAddedToast"), {
       delay: 3000,
     });
@@ -915,7 +915,7 @@ errorToast.show();
 });
 
    document.getElementById("updateVehicleForm").addEventListener("submit", async function (e) {
-    e.preventDefault(); // Sayfa yenilenmesin
+    e.preventDefault(); 
 
     const updatedVehicle = {
       plaka: document.getElementById("updatePlaka").value.trim(),
@@ -950,15 +950,15 @@ errorToast.show();
         throw new Error("Güncelleme sırasında hata oluştu: " + errText);
       }
 
-      // Modalı kapat
+      
       const modalElement = document.getElementById("updateVehicleModal");
       const modalInstance = bootstrap.Modal.getInstance(modalElement);
       modalInstance.hide();
 
-      // Listeyi yeniden yükle
+      
       await fetchVehicles();
 
-      // Başarı mesajı
+      
       showVehicleUpdateToast(true, "✅ Araç başarıyla güncellendi!");
     } catch (error) {
       showVehicleUpdateToast(false, error.message || "❌ Araç güncellenirken bir hata oluştu.");
@@ -984,7 +984,7 @@ function updateSortIcon(columnKey, state) {
   let rects = ["gray", "gray", "gray"];
   if (state === 1) rects[1] = "black";
   else if (state === 2) rects[2] = "black";
-  else rects[0] = "black"; // default: ilk çizgi kalın
+  else rects[0] = "black"; 
 
   icon.innerHTML = `
     <svg width="14" height="14" viewBox="0 0 14 14">
@@ -1002,45 +1002,45 @@ function resetAllSortStates(activeKey) {
     }
   });
   
-  // Sıralama ikonlarını güncelle
+  
   Object.keys(sortStates).forEach(key => {
     updateSortIcon(key, sortStates[key]);
   });
 }
 function sortVehiclesByKey(key, sortState) {
-  if (sortState === 0) return [...allVehicles]; // Sıralama yok, orijinal liste
+  if (sortState === 0) return [...allVehicles]; 
 
   const sorted = [...allVehicles].sort((a, b) => {
     let valA = a[key];
     let valB = b[key];
 
-    // Plaka için özel sıralama: önce rakamlar, sonra harfler, sonra rakamlar
+    
     if (key === "plaka") {
-      // Burada plaka formatına göre sıralama yapılmalı, basit örnek:
+      
       const regex = /^(\d+)([A-Za-z]+)(\d+)$/;
       const matchA = valA.match(regex);
       const matchB = valB.match(regex);
 
       if (matchA && matchB) {
-        // Önce ilk sayı karşılaştırması
+        
         const numA1 = parseInt(matchA[1]);
         const numB1 = parseInt(matchB[1]);
         if (numA1 !== numB1) return (numA1 - numB1) * (sortState === 1 ? 1 : -1);
 
-        // Sonra harf kısmı
+       
         if (matchA[2] !== matchB[2])
           return (matchA[2] < matchB[2] ? -1 : 1) * (sortState === 1 ? 1 : -1);
 
-        // Son sayı
+        
         const numA2 = parseInt(matchA[3]);
         const numB2 = parseInt(matchB[3]);
         return (numA2 - numB2) * (sortState === 1 ? 1 : -1);
       }
-      // Eğer format farklıysa string karşılaştırması
+      
       return (valA < valB ? -1 : 1) * (sortState === 1 ? 1 : -1);
     }
 
-    // String karşılaştırma için:
+    
     if (typeof valA === "string") valA = valA.toLowerCase();
     if (typeof valB === "string") valB = valB.toLowerCase();
 
