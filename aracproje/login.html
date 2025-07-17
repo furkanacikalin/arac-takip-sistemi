@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Giriş Yap</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+
+  <style>
+    body {
+      height: 100vh;
+    }
+    #girisbolumu {
+      background-color: rgb(68, 68, 68);
+      width: 500px;
+      height: 500px;
+      margin-top: 50px;
+      border-radius: 30px;
+      padding: 50px;
+      padding-top: 100px;
+    }
+    .form-floating > label {
+      color: #ccc;
+    }
+    .form-control {
+      background-color: #2e2e2e;
+      color: white;
+      border: 1px solid #444;
+      padding-right: 3rem;
+    }
+    .form-control:focus {
+      background-color: #2e2e2e;
+      color: white;
+      border-color: #cfcfcf;
+      box-shadow: none;
+    }
+    .btn-login {
+      background-color: #8f8f8f;
+      border: none;
+      color: white;
+    }
+    .btn-login:hover {
+      background-color: #ff7300;
+    }
+    .password-wrapper {
+      position: relative;
+    }
+    .toggle-password {
+      position: absolute;
+      top: 50%;
+      right: 15px;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: #ccc;
+      user-select: none;
+      font-size: 1.2rem;
+    }
+    .toggle-password:hover {
+      color: #ff7300;
+    }
+  </style>
+</head>
+<body class="container-fluid d-flex flex-column bg-dark justify-content-center align-items-center text-white">
+  <div class="text-white d-inline-block">
+    <img src="logo.png" alt="" style="width: 130px;" />
+    <span style="font-size: xx-large; margin-left: 15px; font-family: Georgia, 'Times New Roman', Times, serif;">
+      Araç Takip Sistemi
+    </span>
+  </div>
+
+  <div id="girisbolumu">
+    <form id="loginForm">
+      <div class="form-floating mb-3">
+        <input type="email" class="form-control" id="email" placeholder="E-posta" required />
+        <label for="email">E-posta</label>
+      </div>
+
+      <div class="form-floating mb-4 password-wrapper">
+        <input type="password" class="form-control" id="password" placeholder="Şifre" required />
+        <label for="password">Şifre</label>
+        <span class="toggle-password" onclick="togglePasswordVisibility()">
+          <i class="bi bi-eye-fill"></i>
+        </span>
+      </div>
+
+      <button type="submit" class="btn btn-login w-100 mx-auto d-block" style="margin-top: 50px;">
+        Giriş Yap
+      </button>
+
+      <button type="button" onclick="window.location.href='register.html'" class="btn btn-login w-50 mx-auto d-block" style="margin-top: 80px;">
+        Kayıt Ol
+      </button>
+    </form>
+  </div>
+
+  <script>
+    function togglePasswordVisibility() {
+      const passwordInput = document.getElementById('password');
+      const toggleIcon = document.querySelector('.toggle-password i');
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        toggleIcon.classList.remove('bi-eye-fill');
+        toggleIcon.classList.add('bi-eye-slash-fill');
+      } else {
+        passwordInput.type = 'password';
+        toggleIcon.classList.remove('bi-eye-slash-fill');
+        toggleIcon.classList.add('bi-eye-fill');
+      }
+    }
+
+    document.getElementById('loginForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      try {
+        const response = await fetch('http://localhost:3000/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          localStorage.setItem('token', data.token);
+          localStorage.setItem('userName', data.firstname + ' ' + data.lastname);
+
+          // ✅ Home sayfasında popup göstermek için işaret
+          sessionStorage.setItem('showLoginToast', 'true');
+
+          window.location.href = 'home.html';
+        } else {
+          alert(data.message || 'Giriş başarısız.');
+        }
+      } catch (err) {
+        alert("Sunucu hatası: " + err.message);
+      }
+    });
+  </script>
+</body>
+</html>

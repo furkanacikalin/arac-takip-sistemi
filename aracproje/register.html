@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kayıt Ol</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+
+  <style>
+    body {
+      height: 100vh;
+    }
+    #kayitBolumu {
+      background-color: rgb(68, 68, 68);
+      width: 500px;
+      margin-top: 30px;
+      border-radius: 30px;
+      padding: 40px;
+    }
+    .form-floating > label {
+      color: #ccc;
+    }
+    .form-control {
+      background-color: #2e2e2e;
+      color: white;
+      border: 1px solid #444;
+      background-image: none !important;
+    }
+    .form-control:focus {
+      background-color: #2e2e2e;
+      color: white;
+      border-color: #cfcfcf;
+      box-shadow: none;
+    }
+    .form-control.is-valid {
+      border-color: #28a745 !important;
+      box-shadow: none !important;
+      background-image: none !important;
+    }
+    .form-control.is-invalid {
+      border-color: #dc3545 !important;
+      box-shadow: none !important;
+      background-image: none !important;
+    }
+    .btn-register {
+      background-color: #8f8f8f;
+      border: none;
+      color: white;
+    }
+    .btn-register:hover {
+      background-color: #ff7300;
+    }
+    .password-wrapper {
+      position: relative;
+    }
+    .toggle-password {
+      position: absolute;
+      top: 50%;
+      right: 15px;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: #ccc;
+      user-select: none;
+      font-size: 1.2rem;
+    }
+    .toggle-password:hover {
+      color: #ff7300;
+    }
+    .toast-container {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      z-index: 1080;
+    }
+  </style>
+</head>
+
+<body class="container-fluid d-flex flex-column bg-dark justify-content-center align-items-center text-white">
+  <div class="text-white d-inline-block mb-4">
+    <img src="logo.png" alt="" style="width: 130px;" />
+    <span style="font-size: xx-large; margin-left: 15px; font-family: Georgia, 'Times New Roman', Times, serif;">
+      Araç Takip Sistemi
+    </span>
+  </div>
+
+  <div id="kayitBolumu">
+    <form id="registerForm" novalidate>
+      <div class="form-floating mb-3">
+        <input type="text" class="form-control" id="firstname" placeholder="Ad" required />
+        <label for="firstname">Ad</label>
+      </div>
+
+      <div class="form-floating mb-3">
+        <input type="text" class="form-control" id="lastname" placeholder="Soyad" required />
+        <label for="lastname">Soyad</label>
+      </div>
+
+      <div class="position-relative">
+  <div class="form-floating mb-3">
+    <input type="email" class="form-control" id="email" placeholder="E-posta" required />
+    <label for="email">E-posta</label>
+  </div>
+ </div>
+      <div class="form-floating mb-3">
+        <input type="email" class="form-control" id="emailConfirm" placeholder="E-posta (Tekrar)" required />
+        <label for="emailConfirm">E-posta (Tekrar)</label>
+      </div>
+
+      <div class="form-floating mb-3 password-wrapper">
+        <input type="password" class="form-control" id="password" placeholder="Şifre" required />
+        <label for="password">Şifre</label>
+        <span class="toggle-password" onclick="togglePasswordVisibility('password')">
+          <i class="bi bi-eye-fill"></i>
+        </span>
+      </div>
+
+      <div class="form-floating mb-4 password-wrapper">
+        <input type="password" class="form-control" id="passwordConfirm" placeholder="Şifre (Tekrar)" required />
+        <label for="passwordConfirm">Şifre (Tekrar)</label>
+        <span class="toggle-password" onclick="togglePasswordVisibility('passwordConfirm')">
+          <i class="bi bi-eye-fill"></i>
+        </span>
+
+        <div class="form-text text-danger position-absolute w-100 d-none" id="emailFormatWarning" style="top: 100%; font-size: 0.9rem;">
+  Maalesef yalnızca harf (a-z), rakam (0-9) ve nokta (.) kullanılabilir
+</div>
+      </div>
+      
+      <button type="submit" class="btn btn-register w-100 mb-3" id="submitBtn" disabled>Kayıt Ol</button>
+      <button type="button" onclick="window.location.href='login.html'" class="btn btn-outline-light w-100">Hesabın var mı? Giriş Yap</button>
+    </form>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script>
+    function togglePasswordVisibility(id) {
+      const input = document.getElementById(id);
+      const icon = input.nextElementSibling.querySelector('i');
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.classList.remove('bi-eye-fill');
+        icon.classList.add('bi-eye-slash-fill');
+      } else {
+        input.type = 'password';
+        icon.classList.remove('bi-eye-slash-fill');
+        icon.classList.add('bi-eye-fill');
+      }
+    }
+
+    const email = document.getElementById('email');
+    const emailConfirm = document.getElementById('emailConfirm');
+    const emailFormatWarning = document.getElementById('emailFormatWarning');
+    const password = document.getElementById('password');
+    const passwordConfirm = document.getElementById('passwordConfirm');
+    const submitBtn = document.getElementById('submitBtn');
+
+    function validateInputs() {
+  const trimmedEmail = email.value.trim().toLowerCase();
+  const trimmedEmailConfirm = emailConfirm.value.trim().toLowerCase();
+
+  const emailsMatch = trimmedEmail !== "" && trimmedEmail === trimmedEmailConfirm;
+  const emailValid = isEmailValidFormat(trimmedEmail);
+  const passwordsMatch = password.value !== "" && password.value === passwordConfirm.value;
+
+  emailConfirm.classList.toggle('is-valid', emailsMatch);
+  emailConfirm.classList.toggle('is-invalid', !emailsMatch);
+
+  passwordConfirm.classList.toggle('is-valid', passwordsMatch);
+  passwordConfirm.classList.toggle('is-invalid', !passwordsMatch);
+
+  // Email formatı yanlışsa uyarı göster
+  if (trimmedEmail !== '' && !emailValid) {
+    emailFormatWarning.classList.remove('d-none');
+  } else {
+    emailFormatWarning.classList.add('d-none');
+  }
+
+  // Eğer email geçersizse kayıt butonunu kapat
+  submitBtn.disabled = !(emailsMatch && passwordsMatch && emailValid);
+}
+
+    emailConfirm.addEventListener('input', validateInputs);
+    email.addEventListener('input', validateInputs);
+    passwordConfirm.addEventListener('input', validateInputs);
+    password.addEventListener('input', validateInputs);
+
+    function showSuccessToast(message) {
+      const toastContainer = document.getElementById('toastContainer');
+      // Clear previous toasts
+      toastContainer.innerHTML = '';
+
+      const toastEl = document.createElement('div');
+      toastEl.className = 'toast align-items-center text-white bg-success border-0';
+      toastEl.setAttribute('role', 'alert');
+      toastEl.setAttribute('aria-live', 'assertive');
+      toastEl.setAttribute('aria-atomic', 'true');
+
+      toastEl.innerHTML = `
+        <div class="d-flex">
+          <div class="toast-body">${message}</div>
+          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Kapat"></button>
+        </div>
+      `;
+
+      toastContainer.appendChild(toastEl);
+
+      const toast = new bootstrap.Toast(toastEl, { delay: 3000 });
+      toast.show();
+
+      toastEl.addEventListener('hidden.bs.toast', () => {
+        window.location.href = "login.html";
+      });
+    }
+
+       function isEmailValidFormat(value) {
+  const regex = /^[a-z0-9.]+@[a-z0-9.]+\.[a-z]{2,}$/;
+  return regex.test(value.toLowerCase());
+}
+  emailConfirm.addEventListener('focus', () => {
+    const trimmedEmail = email.value.trim();
+
+    if (trimmedEmail !== '' && !isEmailValidFormat(trimmedEmail)) {
+      emailFormatWarning.classList.remove('d-none');
+    } else {
+      emailFormatWarning.classList.add('d-none');
+    }
+  });
+
+  // Kullanıcı e-posta alanını değiştirdiğinde uyarıyı gizle
+  email.addEventListener('input', () => {
+    emailFormatWarning.classList.add('d-none');
+  });
+
+    document.getElementById('registerForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const firstname = document.getElementById('firstname').value.trim();
+      const lastname = document.getElementById('lastname').value.trim();
+
+      try {
+        const response = await fetch('http://localhost:3000/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            firstname,
+            lastname,
+            email: email.value.trim(),
+            password: password.value
+          })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          showSuccessToast("✅ Kayıt başarılı. Giriş sayfasına yönlendiriliyorsunuz.");
+        } else {
+          alert(data.message || "Kayıt başarısız.");
+        }
+      } catch (err) {
+        alert("Sunucu hatası: " + err.message);
+      }
+    });
+  </script>
+</body>
+</html>

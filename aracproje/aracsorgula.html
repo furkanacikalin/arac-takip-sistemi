@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Araç Sorgula</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    #sidebar {
+      width: 250px;
+      height: 100vh;
+      background-color: #343a40;
+      color: white;
+      position: fixed;
+      top: 0;
+      left: 0;
+      padding-top: 60px;
+      transition: all 0.3s;
+    }
+
+    #sidebar.hidden {
+      transform: translateX(-100%);
+    }
+
+    #sidebar ul {
+      list-style: none;
+      padding-left: 20px;
+    }
+
+    #sidebar ul li {
+      margin: 15px 0;
+    }
+
+    #sidebar ul li a {
+      color: white;
+      text-decoration: none;
+    }
+
+    #topNavbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1030;
+    }
+
+    #main-content {
+      margin-left: 250px;
+      padding: 70px 20px 20px 20px;
+      transition: margin-left 0.3s;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: calc(100vh - 70px);
+      text-align: center;
+      flex-direction: column;
+    }
+
+    #main-content.full {
+      margin-left: 0;
+    }
+
+    .toggle-btn {
+      cursor: pointer;
+    }
+
+    #user-area {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: white;
+      font-weight: 500;
+    }
+
+    #logout-btn {
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+      font-size: 1.3rem;
+      padding: 0;
+    }
+
+    #logout-btn:hover {
+      color: #ff7300;
+    }
+
+    /* Araç kartı ana container */
+    .vehicle-card {
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 20px 25px;
+      max-width: 600px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      font-family: Arial, sans-serif;
+      background: #fff;
+      text-align: left;
+      margin-bottom: 15px;
+    }
+
+    /* Üst satır: plaka ve durum yan yana */
+    .header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    /* Plaka stili */
+    .plaka-label {
+      font-weight: 900;
+      font-size: 2rem;
+      color: black;
+      user-select: all;
+    }
+
+    /* Durum stili (siyah, büyük) */
+    .durum-label {
+      font-weight: 700;
+      font-size: 1.7rem;
+      color: black;
+      text-transform: uppercase;
+    }
+
+    /* Alt satır araç detayları */
+    .info-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px 30px;
+      font-size: 1rem;
+      color: #333;
+    }
+
+    .info-row>div {
+      flex: 1 1 45%;
+    }
+
+    /* Responsive için küçük ekranlarda tek sütun */
+    @media (max-width: 480px) {
+      .info-row>div {
+        flex: 1 1 100%;
+      }
+    }
+
+    /* Güncelle butonu container */
+    #update-container {
+      max-width: 600px;
+      text-align: right;
+      margin-bottom: 30px;
+    }
+  </style>
+</head>
+
+<body>
+  <div>
+    <nav id="topNavbar" class="navbar navbar-dark bg-dark fixed-top">
+      <div class="container-fluid d-flex align-items-center justify-content-between">
+        <div class="d-flex align-items-center">
+          <span class="navbar-toggler-icon toggle-btn me-3" onclick="toggleSidebar()" style="cursor: pointer;"></span>
+          <a class="navbar-brand d-flex align-items-center" href="home.html">
+            <img src="logo.png" alt="Logo" width="40" height="34" style="margin-top: 3px; margin-left: 50px;" />
+            <span style="font-family: Georgia, 'Times New Roman', Times, serif;">Araç Takip Sistemi</span>
+          </a>
+        </div>
+
+        <!-- Kullanıcı alanı: Başta giriş butonu görünsün -->
+        <div id="user-area">
+          <a href="login.html" class="btn btn-outline-light me-2" id="login-btn">Giriş Yap</a>
+          <span id="user-name" style="display:none;"></span>
+          <button id="logout-btn" style="display:none;" title="Çıkış Yap">
+            <i class="bi bi-box-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+    </nav>
+  </div>
+
+  <div id="sidebar">
+    <ul>
+      <li><a href="home.html">Ana Sayfa</a> <hr /></li>
+      <li><a href="allvehicles.html">Tüm Araçlar</a><hr /></li>
+      <li><a href="aracsorgula.html">Araç Sorgula</a><hr /></li>
+    </ul>
+  </div>
+
+  <div id="main-content">
+
+  </div>
+
+  <!-- Güncelleme Modal -->
+  <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <form id="updateForm" class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="updateModalLabel">Araç Bilgilerini Güncelle</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Kapat"></button>
+        </div>
+       <div class="modal-body">
+
+         <div class="position-absolute top-0 start-50 translate-middle-x p-2" style="z-index: 1060;" id="modalToastWrapper">
+    <!-- Başarı toast -->
+    <div id="modalSuccessToast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="d-flex">
+        <div class="toast-body">✅ Araç bilgileri güncellendi.</div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Kapat"></button>
+      </div>
+    </div>
+
+    <!-- Hata toast -->
+    <div id="modalErrorToast" class="toast align-items-center text-bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="d-flex">
+        <div class="toast-body" id="modalErrorMessage">❌ Güncelleme sırasında hata oluştu.</div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Kapat"></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <label for="durumInput" class="form-label">Durum</label>
+    <select class="form-select" id="durumInput" required>
+      <option value="">Seçiniz...</option>
+      <option value="Kiralanabilir">Kiralanabilir</option>
+      <option value="Kirada">Kirada</option>
+      <option value="Serviste">Serviste</option>
+      <option value="Bakımda">Bakımda</option>
+      <option value="Yıkamada">Yıkamada</option>
+      <option value="Yakıt İkmalinde">Yakıt İkmalinde</option>
+    </select>
+  </div>
+  <div class="mb-3">
+    <label for="kmInput" class="form-label">Kilometre</label>
+    <input type="number" class="form-control" id="kmInput" min="0" required />
+  </div>
+</div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Güncelle</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Başarılı giriş TOAST mesajı -->
+  <div class="position-fixed top-0 start-50 translate-middle-x p-3" style="z-index: 9999;">
+    <div id="loginToast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive"
+      aria-atomic="true">
+      <div class="d-flex">
+        <div class="toast-body">
+          ✅ Başarılı bir şekilde giriş yaptınız.
+        </div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Kapat"></button>
+      </div>
+    </div>
+  </div>
+
+
+  <script>
+    const sidebar = document.getElementById("sidebar");
+    const content = document.getElementById("main-content");
+    let previousWidth = window.innerWidth;
+
+    function isMobileView() {
+      return window.innerWidth < 992;
+    }
+
+    function setSidebarState(hidden) {
+      sidebar.classList.toggle("hidden", hidden);
+      content.classList.toggle("full", hidden);
+      sessionStorage.setItem("sidebarHidden", hidden);
+    }
+
+    function toggleSidebar() {
+      const isHidden = sidebar.classList.toggle("hidden");
+      content.classList.toggle("full", isHidden);
+      sessionStorage.setItem("sidebarHidden", isHidden);
+    }
+
+    function initializeSidebar() {
+      const stored = sessionStorage.getItem("sidebarHidden");
+      const isMobile = isMobileView();
+
+      if (stored === null) {
+        setSidebarState(isMobile);
+      } else {
+        if (!isMobile) {
+          setSidebarState(false);
+          sessionStorage.removeItem("sidebarHidden");
+        } else {
+          setSidebarState(stored === "true");
+        }
+      }
+    }
+
+    function handleResize() {
+      const currentWidth = window.innerWidth;
+      const wasMobile = previousWidth < 992;
+      const isNowMobile = currentWidth < 992;
+
+      if (!wasMobile && isNowMobile) {
+        const isHidden = sidebar.classList.contains("hidden");
+        if (!isHidden) {
+          setSidebarState(true);
+        }
+      }
+
+      previousWidth = currentWidth;
+    }
+
+    window.addEventListener("load", initializeSidebar);
+    window.addEventListener("resize", handleResize);
+
+    // Kullanıcı adı göster / çıkış butonunu aktif et
+    window.addEventListener("DOMContentLoaded", () => {
+      const token = localStorage.getItem("token");
+      const userName = localStorage.getItem("userName");
+
+      const loginBtn = document.getElementById("login-btn");
+      const userNameSpan = document.getElementById("user-name");
+      const logoutBtn = document.getElementById("logout-btn");
+
+      if (token && userName) {
+        loginBtn.style.display = "none";
+        userNameSpan.style.display = "inline";
+        userNameSpan.textContent = userName;
+
+        logoutBtn.style.display = "inline-block";
+
+        logoutBtn.addEventListener("click", () => {
+          localStorage.removeItem("token");
+          localStorage.removeItem("userName");
+          window.location.href = "home.html";
+        });
+      } else {
+        loginBtn.style.display = "inline-block";
+        userNameSpan.style.display = "none";
+        logoutBtn.style.display = "none";
+      }
+    });
+
+    // Başarılı giriş sonrası toast gösterimi
+    window.addEventListener("DOMContentLoaded", () => {
+      const showToast = sessionStorage.getItem("showLoginToast");
+      if (showToast === "true") {
+        const toast = new bootstrap.Toast(document.getElementById("loginToast"), { delay: 3000 });
+        toast.show();
+        sessionStorage.removeItem("showLoginToast");
+      }
+    });
+
+    // --- Araç sorgulama, gösterme ve güncelleme ---
+
+    let currentVehicleData = null; // Güncel araç verisi burada tutulacak
+
+    async function searchVehicle(query) {
+      const resultDiv = document.getElementById("searchResult");
+      resultDiv.innerHTML = "";
+      // Kayıt varsa buton ve modal bilgisi gizle
+      hideUpdateSection();
+
+      if (!query) return;
+
+      try {
+        const response = await fetch("http://localhost:3000/search-vehicle", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ query }),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          currentVehicleData = data;
+          renderVehicleCard(data);
+          showUpdateSection(data);
+        } else {
+          resultDiv.innerHTML = `<div class="alert alert-danger">Araç bulunamadı.</div>`;
+          currentVehicleData = null;
+        }
+      } catch (error) {
+        resultDiv.innerHTML = `<div class="alert alert-danger">Sunucu hatası. Lütfen daha sonra tekrar deneyin.</div>`;
+        currentVehicleData = null;
+      }
+    }
+
+    async function updateVehicle(plaka, durum, km) {
+  try {
+    const response = await fetch(`http://localhost:3000/allvehicles/${plaka}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ durum, km })
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Güncelleme başarısız');
+    }
+
+    const updatedVehicle = await response.json();
+    alert("Güncelleme başarılı!");
+    // Burada modal kapatma veya UI güncelleme kodları olabilir
+    return updatedVehicle;
+  } catch (error) {
+    alert("Güncelleme sırasında hata oluştu: " + error.message);
+  }
+}
+function submitUpdate() {
+  const durum = document.getElementById("durumInput").value;
+  const km = parseInt(document.getElementById("kmInput").value);
+  const plaka = window.selectedPlaka; // Arama sonrası atanmıştı
+
+  if (!plaka) {
+    alert("Plaka bilgisi eksik!");
+    return;
+  }
+
+  updateVehicle(plaka, durum, km);
+}
+    
+    
+
+    // Araç bilgisi kartını oluştur
+    function renderVehicleCard(data) {
+      const resultDiv = document.getElementById("searchResult");
+      resultDiv.innerHTML = `
+      <div class="vehicle-card">
+        <div class="header-row">
+          <div class="plaka-label">${data.plaka ? data.plaka.toUpperCase() : "-"}</div>
+          <div class="durum-label">${data.durum ? data.durum.toLocaleUpperCase("tr-TR") : "BİLİNMİYOR"}</div>
+        </div>
+        <div class="info-row">
+          <div><strong>Marka:</strong> ${data.marka || "-"}</div>
+          <div><strong>Model:</strong> ${data.model || "-"}</div>
+          <div><strong>Şasi No:</strong> ${data.sasi || "-"}</div>
+          <div><strong>Model Yılı:</strong> ${data.yil || "-"}</div>
+          <div><strong>Kilometre:</strong> ${data.km || "-"}</div>
+          <div><strong>Vites:</strong> ${data.vites || "-"}</div>
+          <div><strong>Yakıt:</strong> ${data.yakit || "-"}</div>
+          <div><strong>Renk:</strong> ${data.renk || "-"}</div>
+        </div>
+      </div>`;
+    }
+
+    // Güncelleme butonu ve container'ını göster
+    function showUpdateSection(data) {
+      let updateContainer = document.getElementById("update-container");
+      if (!updateContainer) {
+        updateContainer = document.createElement("div");
+        updateContainer.id = "update-container";
+        updateContainer.innerHTML = `
+          <button type="button" class="btn btn-warning" id="updateButton" data-bs-toggle="modal" data-bs-target="#updateModal">
+            Bilgileri Güncelle
+          </button>
+        `;
+        content.appendChild(updateContainer);
+      } else {
+        updateContainer.style.display = "block";
+      }
+
+      // Modal alanlarını doldur
+      document.getElementById("durumInput").value = data.durum || "";
+      document.getElementById("kmInput").value = data.km || "";
+
+      // Güncelle butonuna event listener ekle (birden fazla eklenmesin diye önce kaldır)
+      const updateBtn = document.getElementById("updateButton");
+      updateBtn.onclick = null;
+      updateBtn.onclick = () => {
+        const updateModal = bootstrap.Modal.getOrCreateInstance(document.getElementById("updateModal"));
+        updateModal.show();
+      };
+    }
+
+    // Güncelleme alanını gizle
+    function hideUpdateSection() {
+      const updateContainer = document.getElementById("update-container");
+      if (updateContainer) updateContainer.style.display = "none";
+    }
+
+    // Form submit (güncelle) işlemi
+    document.addEventListener("DOMContentLoaded", () => {
+      const form = document.getElementById("updateForm");
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        if (!currentVehicleData) return;
+
+        const newDurum = document.getElementById("durumInput").value.trim();
+        const newKm = parseInt(document.getElementById("kmInput").value, 10);
+
+        if (!newDurum || isNaN(newKm) || newKm < 0) {
+          alert("Lütfen geçerli Durum ve Kilometre bilgisi giriniz.");
+          return;
+        }
+
+        // Örnek güncelleme isteği
+        try {
+          const response = await fetch(`http://localhost:3000/allvehicles/${currentVehicleData.plaka}`, {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+              durum: newDurum,
+              km: newKm,
+           }),
+          });
+
+         if (response.ok) {
+      currentVehicleData.durum = newDurum;
+      currentVehicleData.km = newKm;
+      renderVehicleCard(currentVehicleData);
+
+      showModalToast("success", "Araç bilgileri güncellendi.");
+    } else {
+      showModalToast("error", "Güncelleme sırasında hata oluştu.");
+    }
+  } catch (error) {
+    showModalToast("error", "Sunucuya bağlanırken hata oluştu.");
+  }
+});
+    });
+
+    // Arama kutusu ve butonu oluşturma, eventler
+    document.addEventListener("DOMContentLoaded", () => {
+      const input = document.createElement("input");
+      input.type = "text";
+      input.id = "searchInput";
+      input.placeholder = "Plaka veya Şasi Numarası giriniz...";
+      input.className = "form-control mb-3";
+      input.style.width = "350px";
+      input.style.textTransform = "uppercase";
+
+      input.addEventListener("input", () => {
+        input.value = input.value.toUpperCase();
+      });
+      input.addEventListener("keydown", (e) => {
+        if (e.key === " " || e.code === "Space") {
+          e.preventDefault();
+        }
+      });
+
+      const button = document.createElement("button");
+      button.textContent = "Ara";
+      button.className = "btn btn-primary mb-3 ms-2";
+
+      const inputGroup = document.createElement("div");
+      inputGroup.className = "d-flex align-items-start justify-content-center";
+      inputGroup.appendChild(input);
+      inputGroup.appendChild(button);
+
+      const resultDiv = document.createElement("div");
+      resultDiv.id = "searchResult";
+      resultDiv.style.maxWidth = "600px";
+
+      const mainContent = document.getElementById("main-content");
+      const image = document.createElement("img");
+      image.src = "logo.png";
+      image.alt = "Arama Görseli";
+      image.style.width = "100px";
+      image.style.marginBottom = "75px";
+
+      mainContent.prepend(resultDiv);
+      mainContent.prepend(inputGroup);
+      mainContent.prepend(image);
+
+      // Enter tuşuna basıldığında arama yap
+      input.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+          searchVehicle(input.value.trim());
+        }
+      });
+
+      // Ara butonuna tıklandığında arama yap
+      button.addEventListener("click", () => {
+        searchVehicle(input.value.trim());
+      });
+    });
+    function showSuccessToast() {
+  const toastEl = document.getElementById("successToast");
+  const toast = new bootstrap.Toast(toastEl, { delay: 2000 });
+  toast.show();
+}
+
+function showErrorToast(message = "Güncelleme sırasında hata oluştu.") {
+  document.getElementById("errorToastBody").textContent = ` ${message}`;
+  const toastEl = document.getElementById("errorToast");
+  const toast = new bootstrap.Toast(toastEl, { delay: 3000 });
+  toast.show();
+}
+
+function showModalToast(type, message) {
+  const successToastEl = document.getElementById("modalSuccessToast");
+  const errorToastEl = document.getElementById("modalErrorToast");
+
+  let toastEl;
+  if (type === "success") {
+    toastEl = new bootstrap.Toast(successToastEl, { delay: 2000 });
+    successToastEl.querySelector(".toast-body").textContent = "✅ " + message;
+  } else {
+    toastEl = new bootstrap.Toast(errorToastEl, { delay: 3000 });
+    document.getElementById("modalErrorMessage").textContent = "❌ " + message;
+  }
+
+  toastEl.show();
+
+  if (type === "success") {
+    toastEl._element.addEventListener("hidden.bs.toast", () => {
+      const updateModalEl = document.getElementById("updateModal");
+      const modalInstance = bootstrap.Modal.getInstance(updateModalEl);
+      if (modalInstance) {
+        modalInstance.hide();
+      }
+    }, { once: true });
+  }
+}
+  </script>
+
+  <!-- Bootstrap ikonlar için -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+</body>
+
+</html>
