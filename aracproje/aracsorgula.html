@@ -23,6 +23,8 @@
       left: 0;
       padding-top: 60px;
       transition: all 0.3s;
+      display: flex;
+      flex-direction: column;
     }
 
     #sidebar.hidden {
@@ -32,6 +34,7 @@
     #sidebar ul {
       list-style: none;
       padding-left: 20px;
+      margin-bottom: auto;
     }
 
     #sidebar ul li {
@@ -41,6 +44,24 @@
     #sidebar ul li a {
       color: white;
       text-decoration: none;
+    }
+    #sidebar-footer {
+      text-align: center;
+      padding: 10px;
+      background-color: #343a40;
+      color: #ccc;
+      font-size: 0.85em;
+      width: 100%;
+      box-sizing: border-box;
+      margin-top: auto;
+      border-top: 1px solid #495057;
+    }
+    #sidebar-footer a {
+      color: #fff;
+      text-decoration: none;
+    }
+    #sidebar-footer a:hover {
+      color: #ff7300;
     }
 
     #topNavbar {
@@ -121,7 +142,7 @@
       user-select: all;
     }
 
-    
+   
     .durum-label {
       font-weight: 700;
       font-size: 1.7rem;
@@ -142,7 +163,7 @@
       flex: 1 1 45%;
     }
 
-   
+    
     @media (max-width: 480px) {
       .info-row>div {
         flex: 1 1 100%;
@@ -188,6 +209,7 @@
       <li><a href="allvehicles.html">Tüm Araçlar</a><hr /></li>
       <li><a href="aracsorgula.html">Araç Sorgula</a><hr /></li>
     </ul>
+      <div id="sidebar-footer">© created by <a href="https://github.com/furkanacikalin/" style="color: #fff; text-decoration: none;">Furkan Açıkalın</a><br>all rights reserved</div>
   </div>
 
   <div id="main-content">
@@ -205,7 +227,7 @@
        <div class="modal-body">
 
          <div class="position-absolute top-0 start-50 translate-middle-x p-2" style="z-index: 1060;" id="modalToastWrapper">
-    
+   
     <div id="modalSuccessToast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
       <div class="d-flex">
         <div class="toast-body">✅ Araç bilgileri güncellendi.</div>
@@ -344,7 +366,7 @@
       }
     });
 
-   
+    
     window.addEventListener("DOMContentLoaded", () => {
       const showToast = sessionStorage.getItem("showLoginToast");
       if (showToast === "true") {
@@ -354,7 +376,7 @@
       }
     });
 
-   
+    
 
     let currentVehicleData = null; 
 
@@ -481,7 +503,7 @@ function submitUpdate() {
       if (updateContainer) updateContainer.style.display = "none";
     }
 
-    
+   
     document.addEventListener("DOMContentLoaded", () => {
       const form = document.getElementById("updateForm");
       form.addEventListener("submit", async (e) => {
@@ -522,7 +544,7 @@ function submitUpdate() {
 });
     });
 
-    
+  
     document.addEventListener("DOMContentLoaded", () => {
       const input = document.createElement("input");
       input.type = "text";

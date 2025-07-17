@@ -10,103 +10,129 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
   <style>
     body {
-      margin: 0;
-      padding: 0;
+        margin: 0;
+        padding: 0;
+       
     }
 
     #sidebar {
-      width: 250px;
-      height: 100vh;
-      background-color: #343a40;
-      color: white;
-      position: fixed;
-      top: 0;
-      left: 0;
-      padding-top: 60px;
-      transition: all 0.3s;
+        width: 250px;
+        height: 100vh;
+        background-color: #343a40;
+        color: white;
+        position: fixed;
+        top: 0;
+        left: 0;
+        padding-top: 60px;
+        transition: all 0.3s;
+        display: flex; 
+        flex-direction: column; 
     }
 
     #sidebar.hidden {
-      transform: translateX(-100%);
+        transform: translateX(-100%);
     }
 
     #sidebar ul {
-      list-style: none;
-      padding-left: 20px;
+        list-style: none;
+        padding-left: 20px;
+        margin-bottom: auto; 
     }
 
     #sidebar ul li {
-      margin: 15px 0;
+        margin: 15px 0;
     }
 
     #sidebar ul li a {
-      color: white;
-      text-decoration: none;
+        color: white;
+        text-decoration: none;
     }
 
     #topNavbar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 1030;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1030;
     }
 
     #main-content {
-      margin-left: 250px;
-      padding: 70px 20px 20px 20px;
-      transition: margin-left 0.3s;
+        margin-left: 250px;
+        padding: 70px 20px 20px 20px;
+        transition: margin-left 0.3s;
+       
     }
 
     #main-content.full {
-      margin-left: 0;
+        margin-left: 0;
     }
 
     .toggle-btn {
-      cursor: pointer;
+        cursor: pointer;
     }
 
     #user-area {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      color: white;
-      font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: white;
+        font-weight: 500;
     }
 
     #logout-btn {
-      background: none;
-      border: none;
-      color: white;
-      cursor: pointer;
-      font-size: 1.3rem;
-      padding: 0;
+        background: none;
+        border: none;
+        color: white;
+        cursor: pointer;
+        font-size: 1.3rem;
+        padding: 0;
     }
 
     #logout-btn:hover {
-      color: #ff7300;
+        color: #ff7300;
     }
 
     
     #header-bar {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      margin-bottom: 15px;
-      flex-wrap: wrap;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        margin-bottom: 15px;
+        flex-wrap: wrap;
     }
 
     #header-bar h3 {
-      margin: 0;
-      white-space: nowrap;
+        margin: 0;
+        white-space: nowrap;
     }
 
     #plateSearch {
-      width: 250px;
-      min-width: 200px;
+        width: 250px;
+        min-width: 200px;
+    }
+
+   
+    #sidebar-footer {
+        text-align: center;
+        padding: 10px;
+        background-color: #343a40; 
+        color: #ccc; 
+        font-size: 0.85em;
+        width: 100%;
+        box-sizing: border-box;
+        margin-top: auto; 
+        border-top: 1px solid #495057; 
     }
     
-  </style>
+    #sidebar-footer a {
+        color: #fff; 
+        text-decoration: none;
+    }
+    #sidebar-footer a:hover {
+        color: #ff7300;
+    }
+
+</style>
 </head>
 
 <body>
@@ -137,6 +163,11 @@
       <li><a href="allvehicles.html">Tüm Araçlar</a><hr></li>
       <li><a href="aracsorgula.html">Araç Sorgula</a><hr></li>
     </ul>
+    <div>
+     <footer id="sidebar-footer">
+    © created by <a href="https://github.com/furkanacikalin/" style="color: #ffffff;text-decoration: none;">Furkan Açıkalın</a> <br>all rights reserved
+  </footer>
+    </div>
   </div>
 
   <div id="main-content">
@@ -264,7 +295,7 @@
 </tr>
         </thead>
         <tbody>
-        
+          
         </tbody>
       </table>
     </div>
@@ -272,7 +303,7 @@
 
  
 
- 
+  
   <div
     class="modal fade"
     id="newVehicleModal"
@@ -378,7 +409,7 @@
     </div>
   </div>
 
- 
+  
 <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -398,7 +429,7 @@
 </div>
 
 
- 
+  
 <div class="modal fade" id="updateVehicleModal" tabindex="-1" aria-labelledby="updateVehicleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -541,7 +572,7 @@
   </div>
 </div>
 
- 
+  
 <div id="vehicleDeletedToast" class="toast align-items-center text-white bg-success border-0 mt-2" role="alert" aria-live="assertive" aria-atomic="true">
   <div class="d-flex">
     <div class="toast-body">✅ Araç başarıyla silindi.</div>
@@ -573,574 +604,551 @@
   </div>
   
 
-  <script>
+<script>
     const sidebar = document.getElementById("sidebar");
     const content = document.getElementById("main-content");
     let previousWidth = window.innerWidth;
 
     function isMobileView() {
-      return window.innerWidth < 992;
+        return window.innerWidth < 992;
     }
 
     function setSidebarState(hidden) {
-      sidebar.classList.toggle("hidden", hidden);
-      content.classList.toggle("full", hidden);
-      sessionStorage.setItem("sidebarHidden", hidden);
+        sidebar.classList.toggle("hidden", hidden);
+        content.classList.toggle("full", hidden);
+        sessionStorage.setItem("sidebarHidden", hidden);
+        
     }
 
     function toggleSidebar() {
-      const isHidden = sidebar.classList.toggle("hidden");
-      content.classList.toggle("full", isHidden);
-      sessionStorage.setItem("sidebarHidden", isHidden);
+        const isHidden = sidebar.classList.toggle("hidden");
+        content.classList.toggle("full", isHidden);
+        sessionStorage.setItem("sidebarHidden", isHidden);
+        
     }
 
     function initializeSidebar() {
-      const stored = sessionStorage.getItem("sidebarHidden");
-      const isMobile = isMobileView();
-      if (stored === null) {
-        setSidebarState(isMobile);
-      } else {
-        if (!isMobile) {
-          setSidebarState(false);
-          sessionStorage.removeItem("sidebarHidden");
+        const stored = sessionStorage.getItem("sidebarHidden");
+        const isMobile = isMobileView();
+        if (stored === null) {
+            setSidebarState(isMobile);
         } else {
-          setSidebarState(stored === "true");
+            if (!isMobile) {
+                setSidebarState(false);
+                sessionStorage.removeItem("sidebarHidden");
+            } else {
+                setSidebarState(stored === "true");
+            }
         }
-      }
     }
 
     function handleResize() {
-      const currentWidth = window.innerWidth;
-      const wasMobile = previousWidth < 992;
-      const isNowMobile = currentWidth < 992;
-      if (!wasMobile && isNowMobile) {
-        const isHidden = sidebar.classList.contains("hidden");
-        if (!isHidden) {
-          setSidebarState(true);
+        const currentWidth = window.innerWidth;
+        const wasMobile = previousWidth < 992;
+        const isNowMobile = currentWidth < 992;
+        if (!wasMobile && isNowMobile) {
+            const isHidden = sidebar.classList.contains("hidden");
+            if (!isHidden) {
+                setSidebarState(true);
+            }
         }
-      }
-      previousWidth = currentWidth;
+        previousWidth = currentWidth;
+       
     }
+
+    
+
     function openUpdateModal(vehicle) {
-  document.getElementById("updatePlaka").value = vehicle.plaka || "";
-  document.getElementById("updateDurum").value = vehicle.durum || "";
-  document.getElementById("updateMarka").value = vehicle.marka || "";
-  document.getElementById("updateModel").value = vehicle.model || "";
-  document.getElementById("updateYil").value = vehicle.yil || "";
-  document.getElementById("updateKm").value = vehicle.km || "";
-  document.getElementById("updateRenk").value = vehicle.renk || "";
-  document.getElementById("updateSasi").value = vehicle.sasi || "";
-  document.getElementById("updateVites").value = vehicle.vites || "";
-  document.getElementById("updateYakit").value = vehicle.yakit || "";
+        document.getElementById("updatePlaka").value = vehicle.plaka || "";
+        document.getElementById("updateDurum").value = vehicle.durum || "";
+        document.getElementById("updateMarka").value = vehicle.marka || "";
+        document.getElementById("updateModel").value = vehicle.model || "";
+        document.getElementById("updateYil").value = vehicle.yil || "";
+        document.getElementById("updateKm").value = vehicle.km || "";
+        document.getElementById("updateRenk").value = vehicle.renk || "";
+        document.getElementById("updateSasi").value = vehicle.sasi || "";
+        document.getElementById("updateVites").value = vehicle.vites || "";
+        document.getElementById("updateYakit").value = vehicle.yakit || "";
 
-  const updateModalEl = document.getElementById("updateVehicleModal");
-  const modal = new bootstrap.Modal(updateModalEl);
-  modal.show();
-}
+        const updateModalEl = document.getElementById("updateVehicleModal");
+        const modal = new bootstrap.Modal(updateModalEl);
+        modal.show();
+    }
 
 
-    window.addEventListener("load", initializeSidebar);
+    window.addEventListener("load", () => {
+        initializeSidebar(); 
+        
+    });
+
     window.addEventListener("resize", handleResize);
 
     window.addEventListener("DOMContentLoaded", () => {
-      const token = localStorage.getItem("token");
-      const userName = localStorage.getItem("userName");
-      const loginBtn = document.getElementById("login-btn");
-      const userNameSpan = document.getElementById("user-name");
-      const logoutBtn = document.getElementById("logout-btn");
-      const currentYear = new Date().getFullYear();
-      const plakaInput = document.getElementById("plaka");
-  plakaInput.addEventListener("input", function () {
-    this.value = this.value.toUpperCase();
-  });
-        const yeniAracBtn = document.querySelector('button[data-bs-target="#newVehicleModal"]');
-  if (yeniAracBtn) yeniAracBtn.style.display = token ? "inline-block" : "none";
-
-  
-  setActionButtonsVisibility();
-      document.getElementById("updateYil").setAttribute("max", currentYear);
-
-      document.getElementById("yil").setAttribute("max", currentYear);
-      
-      if (token && userName) {
-        loginBtn.style.display = "none";
-        userNameSpan.style.display = "inline";
-        userNameSpan.textContent = userName;
-        logoutBtn.style.display = "inline-block";
-        logoutBtn.addEventListener("click", () => {
-          localStorage.removeItem("token");
-          localStorage.removeItem("userName");
-          window.location.href = "home.html";
+        const token = localStorage.getItem("token");
+        const userName = localStorage.getItem("userName");
+        const loginBtn = document.getElementById("login-btn");
+        const userNameSpan = document.getElementById("user-name");
+        const logoutBtn = document.getElementById("logout-btn");
+        const currentYear = new Date().getFullYear();
+        const plakaInput = document.getElementById("plaka");
+        plakaInput.addEventListener("input", function() {
+            this.value = this.value.toUpperCase();
         });
-      } else {
-        loginBtn.style.display = "inline-block";
-        userNameSpan.style.display = "none";
-        logoutBtn.style.display = "none";
-      }
+        const yeniAracBtn = document.querySelector('button[data-bs-target="#newVehicleModal"]');
+        if (yeniAracBtn) yeniAracBtn.style.display = token ? "inline-block" : "none";
 
-      const showToast = sessionStorage.getItem("showLoginToast");
-      if (showToast === "true") {
-        const toast = new bootstrap.Toast(
-          document.getElementById("loginToast"),
-          { delay: 3000 }
-        );
-        toast.show();
-        sessionStorage.removeItem("showLoginToast");
-      }
+        setActionButtonsVisibility();
+        document.getElementById("updateYil").setAttribute("max", currentYear);
 
-      fetchVehicles();
+        document.getElementById("yil").setAttribute("max", currentYear);
+
+        if (token && userName) {
+            loginBtn.style.display = "none";
+            userNameSpan.style.display = "inline";
+            userNameSpan.textContent = userName;
+            logoutBtn.style.display = "inline-block";
+            logoutBtn.addEventListener("click", () => {
+                localStorage.removeItem("token");
+                localStorage.removeItem("userName");
+                window.location.href = "home.html";
+            });
+        } else {
+            loginBtn.style.display = "inline-block";
+            userNameSpan.style.display = "none";
+            logoutBtn.style.display = "none";
+        }
+
+        const showToast = sessionStorage.getItem("showLoginToast");
+        if (showToast === "true") {
+            const toast = new bootstrap.Toast(
+                document.getElementById("loginToast"), {
+                    delay: 3000
+                }
+            );
+            toast.show();
+            sessionStorage.removeItem("showLoginToast");
+        }
+
+        fetchVehicles();
     });
 
     let allVehicles = [];
 
     async function fetchVehicles() {
-      try {
-        const token = localStorage.getItem("token");
-        const response = await fetch("http://localhost:3000/allvehicles", {
-          headers: token ? { Authorization: "Bearer " + token } : {},
-        });
-        if (!response.ok) throw new Error("Sunucu hatası");
+        try {
+            const token = localStorage.getItem("token");
+            const response = await fetch("http://localhost:3000/allvehicles", {
+                headers: token ? {
+                    Authorization: "Bearer " + token
+                } : {},
+            });
+            if (!response.ok) throw new Error("Sunucu hatası");
 
-        allVehicles = await response.json();
-        renderVehicles(allVehicles);
-      } catch (err) {
-        console.error("Araçlar alınamadı:", err);
-        const tbody = document.querySelector("#vehicles-table tbody");
-        tbody.innerHTML =
-          '<tr><td colspan="9" class="text-danger">Araçlar yüklenirken hata oluştu.</td></tr>';
-      }
+            allVehicles = await response.json();
+            renderVehicles(allVehicles);
+            
+        } catch (err) {
+            console.error("Araçlar alınamadı:", err);
+            const tbody = document.querySelector("#vehicles-table tbody");
+            tbody.innerHTML =
+                '<tr><td colspan="9" class="text-danger">Araçlar yüklenirken hata oluştu.</td></tr>';
+            
+        }
     }
 
     let plakaToDelete = null;
 
-function renderVehicles(vehicles) {
-  const tbody = document.querySelector("#vehicles-table tbody");
-  tbody.innerHTML = "";
+    function renderVehicles(vehicles) {
+        const tbody = document.querySelector("#vehicles-table tbody");
+        tbody.innerHTML = "";
 
-  vehicles.forEach((vehicle) => {
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td>${vehicle.plaka || ""}</td>
-      <td>${vehicle.durum || ""}</td>
-      <td>${vehicle.marka || ""}</td>
-      <td>${vehicle.model || ""}</td>
-      <td>${vehicle.yil || ""}</td>
-      <td>${vehicle.km || ""}</td>
-      <td>${vehicle.vites || ""}</td>
-      <td>${vehicle.yakit || ""}</td>
-      <td>
-        <button class="btn btn-sm me-2 detail-btn" title="Detay">&gt;</button>
-        <button class="btn btn-sm btn-primary me-2 update-btn">Güncelle</button>
-        <button class="btn btn-sm btn-danger delete-btn">Sil</button>
+        vehicles.forEach((vehicle) => {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+                <td>${vehicle.plaka || ""}</td>
+                <td>${vehicle.durum || ""}</td>
+                <td>${vehicle.marka || ""}</td>
+                <td>${vehicle.model || ""}</td>
+                <td>${vehicle.yil || ""}</td>
+                <td>${vehicle.km || ""}</td>
+                <td>${vehicle.vites || ""}</td>
+                <td>${vehicle.yakit || ""}</td>
+                <td>
+                  <button class="btn btn-sm me-2 detail-btn" title="Detay">&gt;</button>
+                  <button class="btn btn-sm btn-primary me-2 update-btn">Güncelle</button>
+                  <button class="btn btn-sm btn-danger delete-btn">Sil</button>
+                </td>
+            `;
+            tbody.appendChild(tr);
 
-      </td>
-    `;
-    tbody.appendChild(tr);
-    
-    tr.querySelector(".update-btn").addEventListener("click", () => {
-      openUpdateModal(vehicle);
-    });
+            tr.querySelector(".update-btn").addEventListener("click", () => {
+                openUpdateModal(vehicle);
+            });
 
-    tr.querySelector(".delete-btn").addEventListener("click", () => {
-      plakaToDelete = vehicle.plaka;
-      const deleteModalEl = document.getElementById("deleteConfirmModal");
-      const deleteModal = new bootstrap.Modal(deleteModalEl);
-      deleteModal.show();
-    });
+            tr.querySelector(".delete-btn").addEventListener("click", () => {
+                plakaToDelete = vehicle.plaka;
+                const deleteModalEl = document.getElementById("deleteConfirmModal");
+                const deleteModal = new bootstrap.Modal(deleteModalEl);
+                deleteModal.show();
+            });
 
-     tr.querySelector(".detail-btn").addEventListener("click", () => {
-      
-      const existingDetailRow = tbody.querySelector(".detail-row");
+            tr.querySelector(".detail-btn").addEventListener("click", () => {
+                const existingDetailRow = tbody.querySelector(".detail-row");
 
-      
-      if (existingDetailRow && existingDetailRow.previousSibling === tr) {
-        existingDetailRow.remove();
-        return; 
-      }
+                if (existingDetailRow && existingDetailRow.previousSibling === tr) {
+                    existingDetailRow.remove();
+                    return;
+                }
 
-      
-      if (existingDetailRow) {
-        existingDetailRow.remove();
-      }
+                if (existingDetailRow) {
+                    existingDetailRow.remove();
+                }
 
-      
-      const detailTr = document.createElement("tr");
-detailTr.classList.add("detail-row");
-detailTr.innerHTML = `
-  <td colspan="9" style="background-color: #f8f9fa; padding: 0;">
-    <div style="margin: 0 4px; padding: 15px; background-color:  #f8f9fa; ">
-       <strong>Renk:</strong> ${vehicle.renk || 'Bilgi yok'}<br />
-        <strong>Şasi Numarası:</strong> ${vehicle.sasi || 'Bilgi yok'}<br/>
-       <strong>Oluşturan:</strong> ${vehicle.olusturan || 'Bilgi yok'}
-
-    </div>
-  </td>
-`;
-
-     
-      tr.parentNode.insertBefore(detailTr, tr.nextSibling);
-    });
-
-    
-  });
-  setActionButtonsVisibility();
-}
-
-  
-document.getElementById("confirmDeleteBtn").addEventListener("click", async () => {
-  if (!plakaToDelete) return;
-
-  try {
-    const token = localStorage.getItem("token");
-    const response = await fetch(`http://localhost:3000/allvehicles/${encodeURIComponent(plakaToDelete)}`, {
-      method: "DELETE",
-      headers: token ? { Authorization: "Bearer " + token } : {},
-    });
-
-    if (!response.ok) {
-      const errMsg = await response.text();
-      throw new Error("Silme işlemi başarısız: " + errMsg);
+                const detailTr = document.createElement("tr");
+                detailTr.classList.add("detail-row");
+                detailTr.innerHTML = `
+                    <td colspan="9" style="background-color: #f8f9fa; padding: 0;">
+                        <div style="margin: 0 4px; padding: 15px; background-color:  #f8f9fa; ">
+                            <strong>Renk:</strong> ${vehicle.renk || 'Bilgi yok'}<br />
+                            <strong>Şasi Numarası:</strong> ${vehicle.sasi || 'Bilgi yok'}<br/>
+                            <strong>Oluşturan:</strong> ${vehicle.olusturan || 'Bilgi yok'}
+                        </div>
+                    </td>
+                `;
+                tr.parentNode.insertBefore(detailTr, tr.nextSibling);
+            });
+        });
+        setActionButtonsVisibility();
+        
     }
 
-    
-    const deleteModalEl = document.getElementById("deleteConfirmModal");
-    const deleteModalInstance = bootstrap.Modal.getInstance(deleteModalEl);
-    deleteModalInstance.hide();
+    document.getElementById("confirmDeleteBtn").addEventListener("click", async () => {
+        if (!plakaToDelete) return;
 
-    plakaToDelete = null;
+        try {
+            const token = localStorage.getItem("token");
+            const response = await fetch(`http://localhost:3000/allvehicles/${encodeURIComponent(plakaToDelete)}`, {
+                method: "DELETE",
+                headers: token ? {
+                    Authorization: "Bearer " + token
+                } : {},
+            });
 
-    
-    await fetchVehicles();
+            if (!response.ok) {
+                const errMsg = await response.text();
+                throw new Error("Silme işlemi başarısız: " + errMsg);
+            }
 
-    
-    const deleteToast = new bootstrap.Toast(document.getElementById("vehicleDeletedToast"), {
-      delay: 3000,
-    });
-    deleteToast.show();
+            const deleteModalEl = document.getElementById("deleteConfirmModal");
+            const deleteModalInstance = bootstrap.Modal.getInstance(deleteModalEl);
+            deleteModalInstance.hide();
 
-  } catch (error) {
-    
-    const errorMsg = document.getElementById("vehicleDeleteErrorMessage");
-    errorMsg.textContent = "❌ " + error.message;
+            plakaToDelete = null;
 
-    const errorToast = new bootstrap.Toast(document.getElementById("vehicleDeleteErrorToast"), {
-      delay: 3000,
-    });
-    errorToast.show();
-  }
-});
+            await fetchVehicles();
 
-   document.getElementById("searchForm").addEventListener("submit", function (e) {
-  e.preventDefault();
-  const searchText = document.getElementById("plateSearch").value.trim().toLowerCase();
+            const deleteToast = new bootstrap.Toast(document.getElementById("vehicleDeletedToast"), {
+                delay: 3000,
+            });
+            deleteToast.show();
 
-  if (searchText === "") {
-    
-    renderVehicles(allVehicles);
-  } else {
-    
-    const filtered = allVehicles.filter(v =>
-      v.plaka?.toLowerCase().startsWith(searchText)
-    );
-    
-    renderVehicles(filtered.length ? filtered : allVehicles);
-  }
-});
+        } catch (error) {
+            const errorMsg = document.getElementById("vehicleDeleteErrorMessage");
+            errorMsg.textContent = "❌ " + error.message;
 
-
-    
-
-
-
-    
-    document.getElementById("newVehicleForm").addEventListener("submit", async function (e) {
-  e.preventDefault();
-
-  const newVehicle = {
-    plaka: document.getElementById("plaka").value.trim(),
-    durum: document.getElementById("durum").value.trim(),
-    marka: document.getElementById("marka").value.trim(),
-    model: document.getElementById("model").value.trim(),
-    yil: document.getElementById("yil").value
-      ? Number(document.getElementById("yil").value)
-      : undefined,
-    km: document.getElementById("km").value
-      ? Number(document.getElementById("km").value)
-      : undefined,
-    vites: document.getElementById("vites").value.trim(),
-    yakit: document.getElementById("yakit").value.trim(),
-    renk: document.getElementById("renk").value.trim(),     
-    sasi: document.getElementById("sasi").value.trim()      
-  };
-
-  try {
-    const token = localStorage.getItem("token");
-    const response = await fetch("http://localhost:3000/allvehicles", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        ...(token ? { Authorization: "Bearer " + token } : {}),
-      },
-      body: JSON.stringify(newVehicle),
+            const errorToast = new bootstrap.Toast(document.getElementById("vehicleDeleteErrorToast"), {
+                delay: 3000,
+            });
+            errorToast.show();
+        }
     });
 
-    if (!response.ok) {
-      const errText = await response.text();
-      throw new Error("Araç eklenirken hata oluştu: " + errText);
-    }
+    document.getElementById("searchForm").addEventListener("submit", function(e) {
+        e.preventDefault();
+        const searchText = document.getElementById("plateSearch").value.trim().toLowerCase();
 
-    const modalElement = document.getElementById("newVehicleModal");
-    const modalInstance = bootstrap.Modal.getInstance(modalElement);
-    modalInstance.hide();
-
-    this.reset();
-
-    await fetchVehicles();
-
-   
-    const addedToast = new bootstrap.Toast(document.getElementById("vehicleAddedToast"), {
-      delay: 3000,
+        if (searchText === "") {
+            renderVehicles(allVehicles);
+        } else {
+            const filtered = allVehicles.filter(v =>
+                v.plaka?.toLowerCase().startsWith(searchText)
+            );
+            renderVehicles(filtered.length ? filtered : allVehicles);
+        }
     });
-    addedToast.show();
 
-  } catch (error) {
-    const errorMsg = document.getElementById("vehicleErrorMessage");
+    document.getElementById("newVehicleForm").addEventListener("submit", async function(e) {
+        e.preventDefault();
 
+        const newVehicle = {
+            plaka: document.getElementById("plaka").value.trim(),
+            durum: document.getElementById("durum").value.trim(),
+            marka: document.getElementById("marka").value.trim(),
+            model: document.getElementById("model").value.trim(),
+            yil: document.getElementById("yil").value ?
+                Number(document.getElementById("yil").value) :
+                undefined,
+            km: document.getElementById("km").value ?
+                Number(document.getElementById("km").value) :
+                undefined,
+            vites: document.getElementById("vites").value.trim(),
+            yakit: document.getElementById("yakit").value.trim(),
+            renk: document.getElementById("renk").value.trim(),
+            sasi: document.getElementById("sasi").value.trim()
+        };
 
-const errorToast = new bootstrap.Toast(document.getElementById("vehicleErrorToast"), {
-  delay: 3000,
-});
-errorToast.show();
-  }
-});
+        try {
+            const token = localStorage.getItem("token");
+            const response = await fetch("http://localhost:3000/allvehicles", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    ...(token ? {
+                        Authorization: "Bearer " + token
+                    } : {}),
+                },
+                body: JSON.stringify(newVehicle),
+            });
 
-   document.getElementById("updateVehicleForm").addEventListener("submit", async function (e) {
-    e.preventDefault(); 
+            if (!response.ok) {
+                const errText = await response.text();
+                throw new Error("Araç eklenirken hata oluştu: " + errText);
+            }
 
-    const updatedVehicle = {
-      plaka: document.getElementById("updatePlaka").value.trim(),
-      durum: document.getElementById("updateDurum").value.trim(),
-      marka: document.getElementById("updateMarka").value.trim(),
-      model: document.getElementById("updateModel").value.trim(),
-      yil: document.getElementById("updateYil").value
-        ? Number(document.getElementById("updateYil").value)
-        : undefined,
-      km: document.getElementById("updateKm").value
-        ? Number(document.getElementById("updateKm").value)
-        : undefined,
-      vites: document.getElementById("updateVites").value.trim(),
-      yakit: document.getElementById("updateYakit").value.trim(),
-        renk: document.getElementById("updateRenk").value.trim(),     
-      sasi: document.getElementById("updateSasi").value.trim()      
+            const modalElement = document.getElementById("newVehicleModal");
+            const modalInstance = bootstrap.Modal.getInstance(modalElement);
+            modalInstance.hide();
+
+            this.reset();
+
+            await fetchVehicles();
+
+            const addedToast = new bootstrap.Toast(document.getElementById("vehicleAddedToast"), {
+                delay: 3000,
+            });
+            addedToast.show();
+
+        } catch (error) {
+            const errorMsg = document.getElementById("vehicleErrorMessage");
+            const errorToast = new bootstrap.Toast(document.getElementById("vehicleErrorToast"), {
+                delay: 3000,
+            });
+            errorToast.show();
+        }
+    });
+
+    document.getElementById("updateVehicleForm").addEventListener("submit", async function(e) {
+        e.preventDefault();
+
+        const updatedVehicle = {
+            plaka: document.getElementById("updatePlaka").value.trim(),
+            durum: document.getElementById("updateDurum").value.trim(),
+            marka: document.getElementById("updateMarka").value.trim(),
+            model: document.getElementById("updateModel").value.trim(),
+            yil: document.getElementById("updateYil").value ?
+                Number(document.getElementById("updateYil").value) :
+                undefined,
+            km: document.getElementById("updateKm").value ?
+                Number(document.getElementById("updateKm").value) :
+                undefined,
+            vites: document.getElementById("updateVites").value.trim(),
+            yakit: document.getElementById("updateYakit").value.trim(),
+            renk: document.getElementById("updateRenk").value.trim(),
+            sasi: document.getElementById("updateSasi").value.trim()
+        };
+
+        try {
+            const token = localStorage.getItem("token");
+            const response = await fetch(`http://localhost:3000/allvehicles/${encodeURIComponent(updatedVehicle.plaka)}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    ...(token ? {
+                        Authorization: "Bearer " + token
+                    } : {}),
+                },
+                body: JSON.stringify(updatedVehicle),
+            });
+
+            if (!response.ok) {
+                const errText = await response.text();
+                throw new Error("Güncelleme sırasında hata oluştu: " + errText);
+            }
+
+            const modalElement = document.getElementById("updateVehicleModal");
+            const modalInstance = bootstrap.Modal.getInstance(modalElement);
+            modalInstance.hide();
+
+            await fetchVehicles();
+
+            showVehicleUpdateToast(true, "✅ Araç başarıyla güncellendi!");
+        } catch (error) {
+            showVehicleUpdateToast(false, error.message || "❌ Araç güncellenirken bir hata oluştu.");
+        }
+    });
+
+    const sortStates = {
+        plaka: 0,
+        durum: 0,
+        marka: 0,
+        model: 0,
+        modelyilii: 0,
+        kilometre: 0,
+        vites: 0,
+        yakit: 0
     };
 
-    try {
-      const token = localStorage.getItem("token");
-      const response = await fetch(`http://localhost:3000/allvehicles/${encodeURIComponent(updatedVehicle.plaka)}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          ...(token ? { Authorization: "Bearer " + token } : {}),
-        },
-        body: JSON.stringify(updatedVehicle),
-      });
+    function updateSortIcon(columnKey, state) {
+        const icon = document.getElementById(`${columnKey}-sort-icon`);
+        if (!icon) return;
 
-      if (!response.ok) {
-        const errText = await response.text();
-        throw new Error("Güncelleme sırasında hata oluştu: " + errText);
-      }
+        let rects = ["gray", "gray", "gray"];
+        if (state === 1) rects[1] = "black";
+        else if (state === 2) rects[2] = "black";
+        else rects[0] = "black";
 
-      
-      const modalElement = document.getElementById("updateVehicleModal");
-      const modalInstance = bootstrap.Modal.getInstance(modalElement);
-      modalInstance.hide();
-
-      
-      await fetchVehicles();
-
-      
-      showVehicleUpdateToast(true, "✅ Araç başarıyla güncellendi!");
-    } catch (error) {
-      showVehicleUpdateToast(false, error.message || "❌ Araç güncellenirken bir hata oluştu.");
+        icon.innerHTML = `
+            <svg width="14" height="14" viewBox="0 0 14 14">
+                <rect width="14" height="2" y="0" fill="${rects[0]}" />
+                <rect width="14" height="2" y="6" fill="${rects[1]}" />
+                <rect width="14" height="2" y="12" fill="${rects[2]}" />
+            </svg>
+        `;
     }
 
-    
-  });
-  const sortStates = {
-  plaka: 0,
-  durum: 0,
-  marka: 0,
-  model: 0,
-  modelyilii: 0,
-  kilometre: 0,
-  vites: 0,
-  yakit: 0
-};
+    function resetAllSortStates(activeKey) {
+        Object.keys(sortStates).forEach(key => {
+            if (key !== activeKey) {
+                sortStates[key] = 0;
+            }
+        });
 
-function updateSortIcon(columnKey, state) {
-  const icon = document.getElementById(`${columnKey}-sort-icon`);
-  if (!icon) return;
-
-  let rects = ["gray", "gray", "gray"];
-  if (state === 1) rects[1] = "black";
-  else if (state === 2) rects[2] = "black";
-  else rects[0] = "black"; 
-
-  icon.innerHTML = `
-    <svg width="14" height="14" viewBox="0 0 14 14">
-      <rect width="14" height="2" y="0" fill="${rects[0]}" />
-      <rect width="14" height="2" y="6" fill="${rects[1]}" />
-      <rect width="14" height="2" y="12" fill="${rects[2]}" />
-    </svg>
-  `;
-}
-
-function resetAllSortStates(activeKey) {
-  Object.keys(sortStates).forEach(key => {
-    if (key !== activeKey) {
-      sortStates[key] = 0;
-    }
-  });
-  
-  
-  Object.keys(sortStates).forEach(key => {
-    updateSortIcon(key, sortStates[key]);
-  });
-}
-function sortVehiclesByKey(key, sortState) {
-  if (sortState === 0) return [...allVehicles]; 
-
-  const sorted = [...allVehicles].sort((a, b) => {
-    let valA = a[key];
-    let valB = b[key];
-
-    
-    if (key === "plaka") {
-      
-      const regex = /^(\d+)([A-Za-z]+)(\d+)$/;
-      const matchA = valA.match(regex);
-      const matchB = valB.match(regex);
-
-      if (matchA && matchB) {
-        
-        const numA1 = parseInt(matchA[1]);
-        const numB1 = parseInt(matchB[1]);
-        if (numA1 !== numB1) return (numA1 - numB1) * (sortState === 1 ? 1 : -1);
-
-       
-        if (matchA[2] !== matchB[2])
-          return (matchA[2] < matchB[2] ? -1 : 1) * (sortState === 1 ? 1 : -1);
-
-        
-        const numA2 = parseInt(matchA[3]);
-        const numB2 = parseInt(matchB[3]);
-        return (numA2 - numB2) * (sortState === 1 ? 1 : -1);
-      }
-      
-      return (valA < valB ? -1 : 1) * (sortState === 1 ? 1 : -1);
+        Object.keys(sortStates).forEach(key => {
+            updateSortIcon(key, sortStates[key]);
+        });
     }
 
-    
-    if (typeof valA === "string") valA = valA.toLowerCase();
-    if (typeof valB === "string") valB = valB.toLowerCase();
+    function sortVehiclesByKey(key, sortState) {
+        if (sortState === 0) return [...allVehicles];
 
-    if (valA < valB) return sortState === 1 ? -1 : 1;
-    if (valA > valB) return sortState === 1 ? 1 : -1;
-    return 0;
-  });
+        const sorted = [...allVehicles].sort((a, b) => {
+            let valA = a[key];
+            let valB = b[key];
 
-  return sorted;
-}
-document.getElementById("plaka-header").addEventListener("click", () => {
-  sortStates.plaka = (sortStates.plaka + 1) % 3;
-  resetAllSortStates("plaka");
+            if (key === "plaka") {
+                const regex = /^(\d+)([A-Za-z]+)(\d+)$/;
+                const matchA = valA.match(regex);
+                const matchB = valB.match(regex);
 
-  const sorted = sortVehiclesByKey("plaka", sortStates.plaka);
-  renderVehicles(sorted);
-});
+                if (matchA && matchB) {
+                    const numA1 = parseInt(matchA[1]);
+                    const numB1 = parseInt(matchB[1]);
+                    if (numA1 !== numB1) return (numA1 - numB1) * (sortState === 1 ? 1 : -1);
 
-document.getElementById("durum-header").addEventListener("click", () => {
-  sortStates.durum = (sortStates.durum + 1) % 3;
-  resetAllSortStates("durum");
+                    if (matchA[2] !== matchB[2])
+                        return (matchA[2] < matchB[2] ? -1 : 1) * (sortState === 1 ? 1 : -1);
 
-  const sorted = sortVehiclesByKey("durum", sortStates.durum);
-  renderVehicles(sorted);
-});
+                    const numA2 = parseInt(matchA[3]);
+                    const numB2 = parseInt(matchB[3]);
+                    return (numA2 - numB2) * (sortState === 1 ? 1 : -1);
+                }
+                return (valA < valB ? -1 : 1) * (sortState === 1 ? 1 : -1);
+            }
 
-document.getElementById("marka-header").addEventListener("click", () => {
-  sortStates.marka = (sortStates.marka + 1) % 3;
-  resetAllSortStates("marka");
+            if (typeof valA === "string") valA = valA.toLowerCase();
+            if (typeof valB === "string") valB = valB.toLowerCase();
 
-  const sorted = sortVehiclesByKey("marka", sortStates.marka);
-  renderVehicles(sorted);
-});
+            if (valA < valB) return sortState === 1 ? -1 : 1;
+            if (valA > valB) return sortState === 1 ? 1 : -1;
+            return 0;
+        });
 
-document.getElementById("model-header").addEventListener("click", () => {
-  sortStates.model = (sortStates.model + 1) % 3;
-  resetAllSortStates("model");
+        return sorted;
+    }
 
-  const sorted = sortVehiclesByKey("model", sortStates.model);
-  renderVehicles(sorted);
-});
+    document.getElementById("plaka-header").addEventListener("click", () => {
+        sortStates.plaka = (sortStates.plaka + 1) % 3;
+        resetAllSortStates("plaka");
+        const sorted = sortVehiclesByKey("plaka", sortStates.plaka);
+        renderVehicles(sorted);
+    });
 
-document.getElementById("modelyilii-header").addEventListener("click", () => {
-  sortStates.modelyilii = (sortStates.modelyilii + 1) % 3;
-  resetAllSortStates("modelyilii");
-  updateSortIcon("modelyilii", sortStates.modelyilii);
+    document.getElementById("durum-header").addEventListener("click", () => {
+        sortStates.durum = (sortStates.durum + 1) % 3;
+        resetAllSortStates("durum");
+        const sorted = sortVehiclesByKey("durum", sortStates.durum);
+        renderVehicles(sorted);
+    });
 
-  const sorted = sortVehiclesByKey("yil", sortStates.modelyilii);
-  renderVehicles(sorted);
-});
+    document.getElementById("marka-header").addEventListener("click", () => {
+        sortStates.marka = (sortStates.marka + 1) % 3;
+        resetAllSortStates("marka");
+        const sorted = sortVehiclesByKey("marka", sortStates.marka);
+        renderVehicles(sorted);
+    });
 
-document.getElementById("kilometre-header").addEventListener("click", () => {
-  sortStates.kilometre = (sortStates.kilometre + 1) % 3;
-  resetAllSortStates("kilometre");
+    document.getElementById("model-header").addEventListener("click", () => {
+        sortStates.model = (sortStates.model + 1) % 3;
+        resetAllSortStates("model");
+        const sorted = sortVehiclesByKey("model", sortStates.model);
+        renderVehicles(sorted);
+    });
 
-  const sorted = sortVehiclesByKey("km", sortStates.kilometre);
-  renderVehicles(sorted);
-});
+    document.getElementById("modelyilii-header").addEventListener("click", () => {
+        sortStates.modelyilii = (sortStates.modelyilii + 1) % 3;
+        resetAllSortStates("modelyilii");
+        updateSortIcon("modelyilii", sortStates.modelyilii);
+        const sorted = sortVehiclesByKey("yil", sortStates.modelyilii);
+        renderVehicles(sorted);
+    });
 
-document.getElementById("vites-header").addEventListener("click", () => {
-  sortStates.vites = (sortStates.vites + 1) % 3;
-  resetAllSortStates("vites");
+    document.getElementById("kilometre-header").addEventListener("click", () => {
+        sortStates.kilometre = (sortStates.kilometre + 1) % 3;
+        resetAllSortStates("kilometre");
+        const sorted = sortVehiclesByKey("km", sortStates.kilometre);
+        renderVehicles(sorted);
+    });
 
-  const sorted = sortVehiclesByKey("vites", sortStates.vites);
-  renderVehicles(sorted);
-});
+    document.getElementById("vites-header").addEventListener("click", () => {
+        sortStates.vites = (sortStates.vites + 1) % 3;
+        resetAllSortStates("vites");
+        const sorted = sortVehiclesByKey("vites", sortStates.vites);
+        renderVehicles(sorted);
+    });
 
-document.getElementById("yakit-header").addEventListener("click", () => {
-  sortStates.yakit = (sortStates.yakit + 1) % 3;
-  resetAllSortStates("yakit");
+    document.getElementById("yakit-header").addEventListener("click", () => {
+        sortStates.yakit = (sortStates.yakit + 1) % 3;
+        resetAllSortStates("yakit");
+        const sorted = sortVehiclesByKey("yakit", sortStates.yakit);
+        renderVehicles(sorted);
+    });
 
-  const sorted = sortVehiclesByKey("yakit", sortStates.yakit);
-  renderVehicles(sorted);
-});
-function setActionButtonsVisibility() {
-  const token = localStorage.getItem("token");
-  const updateBtns = document.querySelectorAll(".update-btn");
-  const deleteBtns = document.querySelectorAll(".delete-btn");
+    function setActionButtonsVisibility() {
+        const token = localStorage.getItem("token");
+        const updateBtns = document.querySelectorAll(".update-btn");
+        const deleteBtns = document.querySelectorAll(".delete-btn");
 
-  updateBtns.forEach(btn => {
-    btn.style.display = token ? "inline-block" : "none";
-  });
+        updateBtns.forEach(btn => {
+            btn.style.display = token ? "inline-block" : "none";
+        });
 
-  deleteBtns.forEach(btn => {
-    btn.style.display = token ? "inline-block" : "none";
-  });
-}
+        deleteBtns.forEach(btn => {
+            btn.style.display = token ? "inline-block" : "none";
+        });
+    }
 
-function showVehicleUpdateToast(success, message) {
-  if (success) {
-    document.getElementById("vehicleUpdateSuccessMessage").textContent = message;
-    const toast = new bootstrap.Toast(document.getElementById("vehicleUpdateSuccessToast"));
-    toast.show();
-  } else {
-    document.getElementById("vehicleUpdateErrorMessage").textContent = message;
-    const toast = new bootstrap.Toast(document.getElementById("vehicleUpdateErrorToast"));
-    toast.show();
-  }
-}
-  </script>
+    function showVehicleUpdateToast(success, message) {
+        if (success) {
+            document.getElementById("vehicleUpdateSuccessMessage").textContent = message;
+            const toast = new bootstrap.Toast(document.getElementById("vehicleUpdateSuccessToast"));
+            toast.show();
+        } else {
+            document.getElementById("vehicleUpdateErrorMessage").textContent = message;
+            const toast = new bootstrap.Toast(document.getElementById("vehicleUpdateErrorToast"));
+            toast.show();
+        }
+    }
+</script>
 </body>
 
 </html>
