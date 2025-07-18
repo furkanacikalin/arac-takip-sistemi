@@ -470,32 +470,43 @@ function submitUpdate() {
 
     
     function showUpdateSection(data) {
-      let updateContainer = document.getElementById("update-container");
-      if (!updateContainer) {
+    let updateContainer = document.getElementById("update-container");
+
+    
+    const token = localStorage.getItem('token'); 
+
+    if (!token) {
+        
+        hideUpdateSection(); 
+        return; 
+    }
+
+    
+    if (!updateContainer) {
         updateContainer = document.createElement("div");
         updateContainer.id = "update-container";
         updateContainer.innerHTML = `
-          <button type="button" class="btn btn-warning" id="updateButton" data-bs-toggle="modal" data-bs-target="#updateModal">
-            Bilgileri Güncelle
-          </button>
+            <button type="button" class="btn btn-warning" id="updateButton" data-bs-toggle="modal" data-bs-target="#updateModal">
+                Bilgileri Güncelle
+            </button>
         `;
         content.appendChild(updateContainer);
-      } else {
-        updateContainer.style.display = "block";
-      }
+    } else {
+        updateContainer.style.display = "block"; 
+    }
 
-      
-      document.getElementById("durumInput").value = data.durum || "";
-      document.getElementById("kmInput").value = data.km || "";
+    
+    document.getElementById("durumInput").value = data.durum || "";
+    document.getElementById("kmInput").value = data.km || "";
 
-      
-      const updateBtn = document.getElementById("updateButton");
-      updateBtn.onclick = null;
-      updateBtn.onclick = () => {
+    
+    const updateBtn = document.getElementById("updateButton");
+    updateBtn.onclick = null; 
+    updateBtn.onclick = () => {
         const updateModal = bootstrap.Modal.getOrCreateInstance(document.getElementById("updateModal"));
         updateModal.show();
-      };
-    }
+    };
+}
 
     
     function hideUpdateSection() {
