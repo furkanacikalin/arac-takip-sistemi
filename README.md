@@ -69,7 +69,4 @@ Kullanıcıların kayıt olarak veya giriş yaparak, kendi adları altında ara�
 - JWT_SECRET şifresini istediğiniz gibi belirleyebilirsiniz. PORT=3000 olarak kalsın.
 - .env dosyasında işimiz bitti. Kaydedebilirsiniz.
 - Terminalde (cmd veya Visual Studio Code terminali) backend klasörü içine gidip şunu yazmalısınız: node server.js
-- Bunu da yaptıktan sonra home.html dosyasını açabilirsiniz.
-- 
-- 
-- 
+- Bunu da yaptıktan sonra home.html dosyasını açıp siteyi kullanmaya başlayabilirsiniz.
