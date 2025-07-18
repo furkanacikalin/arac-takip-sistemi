@@ -37,8 +37,39 @@ Kullanıcıların kayıt olarak veya giriş yaparak, kendi adları altında ara�
 
 - Projeyi rar dosyası olarak indirin.
 - rar dosyasının içindeki klasörü masaüstüne çıkarın.
-- cmd'yi açın ve backend klasörünün içine gidin.
-- "npm install" yazınız.
-- MongoDB Atlas'ta hesabınıza giriş yapıp new project'e basınız.
-- Yeni proje oluşturup ardından yeni cluster oluşturunuz.
-- Burada da iki adet database oluşturmanız gerekli: Kullanıcı listesi ve Araç listesi.
+- Terminali (cmd) açın ve backend klasörünün içine gidin.
+- Terminalde "npm install" yazın.
+- https://www.mongodb.com/atlas sitesine gidip MongoDB hesabınıza giriş yapın.
+- Açılan Overview sayfasında yeni bir cluster oluşturmak için "create" tuşuna basın.
+- Burada "free" versiyonu seçip, Cluster'ınıza isim verip (Cluster0 olabilir), AWS ve eu-west-1 olanlardan birini seçebilirsiniz.
+- Ardından "create deployment" tuşuna basın.
+- Yeni açılan sayfada bir ekran çıkacak; Orada username ve password bilgileri girip yanındaki "copy" tuşuna bastıktan sonra "Create Database User"'a basın.
+- "Choose a connection method" tuşuna basın.
+- "Connect to your application" başlığı altındaki "Drivers"'a basın.
+- mongodb+srv... ile başlayan uzun linki bir yere not edin. Ardından "done" tuşuna basarak burayı kapatın.
+- Sol menüden Database başlığı altındaki Clusters'a basın.
+- "Browse Collections" tuşuna basın.
+- Burada da "Create Database" tuşuna basın. Kullanıcı listesi için database oluşturacağız.
+- Database ismini (UserList) ve collection ismini (users) girip "create" tuşuna basın.
+- Tekrar "Create Database" tuşuna basın. Araç listesi için database oluşturacağız.
+- Database ismini (VehiclesList) ve collection ismini (vehicles) girip "create" tuşuna basın.
+- Database'lerimizi oluşturduk.
+- Şimdi ise backend klasörü içine .env dosyası oluşturun. (.env.example dosyası içeriğine benzer şekilde olmalı.)
+- araç-takip-sistemi klasörünü Visual Studio Code'da açarak daha rahat işlem yapabilirsiniz.
+- Not aldığınız linki burada kullanacağız.
+- Linkin başında kendi username ve password bilgileriniz yazmalı: mongodb+srv://**USERNAME**:**PASSWORD**@...
+- Passwordu yazarken özel karakterlere dikkat edin. Özel karakterler varsa URL encoding sistemine göre düzenleyiniz.
+- MONGO_URI_USERLIST linki için; "?retryWrites" yazısından önce kullanıcılar için oluşturduğunuz database'in ismini girmelisiniz: .../UserList?retryWrites...
+- Ve aynı database ismini linkin sonundaki "appName=" sonrası için de güncellemelisiniz: ...appName=UserList
+- Aynı link üzerinden ayrı bir düzenlemeyi de araç listesini tutan database için de yapmalısınız.
+- MONGO_URI_USERLIST=mongodb+srv://**USERNAME**:**PASSWORD**@*size-özel-bilgiler*.mongodb.net/UserList?retryWrites=true&w=majority&appName=UserList
+- MONGO_URI_VEHICLES=mongodb+srv://**USERNAME**:**PASSWORD**@*size-özel-bilgiler*.mongodb.net/VehiclesList?retryWrites=true&w=majority&appName=VehiclesList
+- Linkler bu şekilde olmalı. size-özel-bilgiler yazdığım yerde değiştirmeniz gereken bir şey yoktur.
+- Benim UserList ve VehiclesList yazdığım yerlere kendi database isimlerinizi yazmayı unutmayınız.
+- JWT_SECRET şifresini istediğiniz gibi belirleyebilirsiniz. PORT=3000 olarak kalsın.
+- .env dosyasında işimiz bitti. Kaydedebilirsiniz.
+- Terminalde (cmd veya Visual Studio Code terminali) backend klasörü içine gidip şunu yazmalısınız: node server.js
+- Bunu da yaptıktan sonra home.html dosyasını açabilirsiniz.
+- 
+- 
+- 
